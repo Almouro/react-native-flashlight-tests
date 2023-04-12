@@ -1,0 +1,4 @@
+appId: will.be.overridden
+---
+- launchApp
+- assertVisible: BULBASAUR
