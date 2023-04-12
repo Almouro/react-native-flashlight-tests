@@ -1,0 +1,51 @@
+name: Build
+on:
+  workflow_dispatch:
+    inputs:
+      new_arch:
+        description: "Enable new architecture"
+        required: true
+        type: boolean
+        default: false
+      rn_version:
+        description: "React Native version"
+        required: true
+        type: string
+      scenario:
+        description: "Scenario"
+        required: true
+        type: string
+
+jobs:
+  build_app:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Set up JDK 18
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "18"
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      - name: Build APK
+        run: |
+          mkdir -p apks
+          ./setup-react-native-app.sh ${{ inputs.rn_version }} ${{ inputs.new_arch }} ${{ inputs.scenario }}
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        env:
+          PULL_REQUEST_GITHUB_TOKEN: ${{ secrets.PULL_REQUEST_GITHUB_TOKEN }}
+        with:
+          token: ${{ secrets.PULL_REQUEST_GITHUB_TOKEN }}
+          title: "Build APK: RN${{ inputs.rn_version }} - new arch: ${{ inputs.new_arch }} - ${{ inputs.scenario }}"
+          commit-message: Update open-source submodule
+          body: "This pull request is generated automatically"
+          branch: update-submodule
+          delete-branch: true
