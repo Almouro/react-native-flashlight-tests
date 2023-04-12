@@ -1,0 +1,66 @@
+name: Build
+on:
+  workflow_dispatch:
+    inputs:
+      new_arch:
+        description: "Enable new architecture"
+        required: true
+        type: boolean
+        default: false
+      rn_version:
+        description: "React Native version"
+        required: true
+        type: string
+      scenario:
+        description: "Scenario"
+        required: true
+        type: string
+      projectId:
+        description: "Flashlight project id"
+        type: string
+        default: "61582a54-5f3b-44bb-8323-dd83e5ddef51"
+
+jobs:
+  build_app:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Set up JDK 18
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "18"
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      - name: Build APK
+        run: |
+          mkdir -p apks
+          ./setup-react-native-app.sh ${{ inputs.rn_version }} ${{ inputs.new_arch }} ${{ inputs.scenario }}
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
+      # - name: Create Pull Request
+      #   uses: peter-evans/create-pull-request@v5
+      #   env:
+      #     PULL_REQUEST_GITHUB_TOKEN: ${{ secrets.PULL_REQUEST_GITHUB_TOKEN }}
+      #   with:
+      #     token: ${{ secrets.PULL_REQUEST_GITHUB_TOKEN }}
+      #     title: "Build APK: RN${{ inputs.rn_version }} - new arch: ${{ inputs.new_arch }} - ${{ inputs.scenario }}"
+      #     commit-message: "Build APK: RN${{ inputs.rn_version }} - new arch: ${{ inputs.new_arch }} - ${{ inputs.scenario }}"
+      #     body: "This pull request is generated automatically"
+      #     branch: "build-apk-rn${{ inputs.rn_version }}-new-arch-${{ inputs.new_arch }}-${{ inputs.scenario }}"
+      #     delete-branch: true
+      - name: Send to Flashlight
+        env:
+          FLASHLIGHT_API_KEY: ${{ secrets.FLASHLIGHT_API_KEY }}
+        run: |
+          curl https://get.flashlight.dev | bash
+          # For some reason path overriding doesn't work
+          /home/runner/.flashlight/bin/flashlight cloud --app ${{ env.APK_PATH }} \
+            --duration 10000 \
+            --projectId ${{ inputs.projectId }} \
+            --test ./e2e/${{ inputs.scenario }}_start.yaml \
+            --testName ${{ inputs.scenario }}

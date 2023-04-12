@@ -1,0 +1,33 @@
+name: Dispatch all builds
+on:
+  workflow_dispatch:
+    inputs:
+      new_arch:
+        description: "Enable new architecture"
+        required: true
+        type: boolean
+        default: false
+      scenario:
+        description: "Scenario"
+        required: true
+        type: choice
+        options:
+          - pokedex
+          - pokedex-4-columns
+          - thousands
+          - blink
+
+jobs:
+  build_app:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Dispatch all builds
+        run: |
+          ./full.sh ${{ github.event.inputs.new_arch }} ${{ github.event.inputs.scenario }}
+        env:
+          GH_TOKEN_DISPATCH_ACTION: ${{ secrets.GH_TOKEN_DISPATCH_ACTION }}
