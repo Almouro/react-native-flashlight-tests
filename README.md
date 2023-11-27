@@ -5,10 +5,10 @@ There are a few scenarios to choose from in the `scenarios` folder
 
 Then you can run 
 ```bash
-./setup-react-native-app.sh <version> <enable new arch or not> <scenario>`
+./setup-react-native-app.sh <version> <enable new arch or not> <scenario>
 ```
 
 For instance:
 ```bash
-./setup-react-native-app.sh 0.72.6 false pokedex`
+./setup-react-native-app.sh 0.72.6 false pokedex
 ```
