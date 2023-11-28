@@ -1,0 +1,61 @@
+diff --git a/ReactAndroid/src/main/java/com/facebook/react/ReactRootView.java b/ReactAndroid/src/main/java/com/facebook/react/ReactRootView.java
+index e0c37c31a24..ecbe31f2368 100644
+--- a/ReactAndroid/src/main/java/com/facebook/react/ReactRootView.java
++++ b/ReactAndroid/src/main/java/com/facebook/react/ReactRootView.java
+@@ -868,7 +868,7 @@ public class ReactRootView extends FrameLayout implements RootView, ReactRoot {
+ 
+   @Override
+   public @UIManagerType int getUIManagerType() {
+-    return mUIManagerType;
++    return UIManagerType.DEFAULT;
+   }
+ 
+   @Nullable
+diff --git a/ReactAndroid/src/main/java/com/facebook/react/uimanager/events/Event.java b/ReactAndroid/src/main/java/com/facebook/react/uimanager/events/Event.java
+index 0b6a1140c8e..c1abf03ac89 100644
+--- a/ReactAndroid/src/main/java/com/facebook/react/uimanager/events/Event.java
++++ b/ReactAndroid/src/main/java/com/facebook/react/uimanager/events/Event.java
+@@ -159,7 +159,7 @@ public abstract class Event<T extends Event> {
+   }
+ 
+   public final @UIManagerType int getUIManagerType() {
+-    return mUIManagerType;
++    return UIManagerType.DEFAULT;
+   }
+ 
+   /** @return the name of this event as registered in JS */
+diff --git a/packages/rn-tester/android/app/gradle.properties b/packages/rn-tester/android/app/gradle.properties
+index c780b9d10b8..59fa1785ef2 100644
+--- a/packages/rn-tester/android/app/gradle.properties
++++ b/packages/rn-tester/android/app/gradle.properties
+@@ -11,3 +11,7 @@ android.enableJetifier=true
+ 
+ # Version of flipper SDK to use with React Native
+ FLIPPER_VERSION=0.125.0
++
++# RN-Tester is running with Hermes enabled and filtering variants with enableHermesOnlyInVariants
++hermesEnabled=true
++newArchEnabled=false
+diff --git a/packages/rn-tester/android/app/src/main/java/com/facebook/react/uiapp/RNTesterApplication.java b/packages/rn-tester/android/app/src/main/java/com/facebook/react/uiapp/RNTesterApplication.java
+index cdc5ac62828..d6bbe8307f1 100644
+--- a/packages/rn-tester/android/app/src/main/java/com/facebook/react/uiapp/RNTesterApplication.java
++++ b/packages/rn-tester/android/app/src/main/java/com/facebook/react/uiapp/RNTesterApplication.java
+@@ -33,6 +33,10 @@ import java.util.List;
+ import java.util.Map;
+ 
+ public class RNTesterApplication extends Application implements ReactApplication {
++  static {
++    ReactFeatureFlags.useTurboModules = false;
++    ReactFeatureFlags.enableFabricRenderer = false;
++  }
+ 
+   private final ReactNativeHost mReactNativeHost =
+       new DefaultReactNativeHost(this) {
+@@ -119,7 +123,6 @@ public class RNTesterApplication extends Application implements ReactApplication
+ 
+   @Override
+   public void onCreate() {
+-    ReactFeatureFlags.useTurboModules = true;
+     ReactFontManager.getInstance().addCustomFont(this, "Rubik", R.font.rubik);
+     super.onCreate();
+     SoLoader.init(this, /* native exopackage */ false);

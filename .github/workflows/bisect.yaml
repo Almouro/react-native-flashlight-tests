@@ -1,0 +1,59 @@
+name: RN Build Test
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: "Commit hash"
+        required: true
+        type: string
+
+jobs:
+  build_app:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: test
+        run: |
+          git clone https://github.com/facebook/react-native.git
+          git clone https://github.com/facebook/hermes.git
+          cd react-native
+          git checkout ${{ inputs.commit }}
+          COMMIT_DATE=$(git show -s --format=%cI ${commit_hash})
+          cd ../hermes
+          HERMES_COMMIT=$(git rev-list -n 1 --before=$COMMIT_DATE main)
+          cd ../react-native
+          echo $HERMES_COMMIT > sdks/.hermesversion
+          git apply ../bisect/patch_070_2.patch
+          echo "import App from './pokedex/App';export default App;" > packages/rn-tester/js/RNTesterAppShared.js
+          mv ../scenarios/pokedex-4-columns packages/rn-tester/js/pokedex
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Set up JDK 18
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "18"
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      - name: Build APK
+        run: |
+          cd react-native
+          yarn
+          ./gradlew :packages:rn-tester:android:app:assembleHermesRelease -PreactNativeArchitectures=armeabi-v7a
+          commit_hash=$(git rev-parse HEAD)
+          cd ..
+          mv react-native/packages/rn-tester/android/app/build/outputs/apk/hermes/release/app-hermes-armeabi-v7a-release.apk "${commit_hash}-pok4col.apk"
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: apk
+          path: react-native/packages/rn-tester/android/app/build/outputs/apk/hermes/release/app-hermes-armeabi-v7a-release.apk
+      - name: Send to Flashlight
+        env:
+          FLASHLIGHT_API_KEY: ${{ secrets.FLASHLIGHT_API_KEY }}
+        run: |
+          export FLASHLIGHT_API_KEY=$FLASHLIGHT_API_KEY
+          ./bisect/flashlight.sh
