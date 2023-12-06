@@ -2,7 +2,7 @@ name: Daily Build
 
 on:
   schedule:
-    - cron: "0 11 * * *" # Runs at 11:00 AM every day
+    - cron: "0 1 * * *" # Runs at 8:30 AM (UTC) every day
 
 jobs:
   build:
@@ -19,7 +19,14 @@ jobs:
           node-version: "16"
         run: echo "Node setup"
 
+      - name: install dependencies
+        run: |
+          echo "Installing dependencies"
+          yarn
+
       - name: Run dailyBuild.ts
         run: |
           echo "Performing Daily Builds"
-          npx ts-node ../../dailyBuild.ts
+          npx ts-node ../../dailyBuild/dailyBuild.ts
+        env:
+          GH_TOKEN_DISPATCH_ACTION: ${{ secrets.GH_TOKEN_DISPATCH_ACTION }}
