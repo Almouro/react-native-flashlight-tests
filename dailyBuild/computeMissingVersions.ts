@@ -1,6 +1,6 @@
 //@ts-ignore
 const { exec } = require("child_process");
-import { fetchVersionsHistory } from "./dailyBuild";
+import { fetchVersionsHistory } from "./fetchVersionsHistory";
 
 const fetchAvailableVersions = (): Promise<string[]> => {
   return new Promise((resolve, reject) => {
