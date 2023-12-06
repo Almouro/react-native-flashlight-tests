@@ -1,0 +1,25 @@
+name: Daily Build
+
+on:
+  schedule:
+    - cron: "0 11 * * *" # Runs at 11:00 AM every day
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        run: echo "Preparing environment"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+        run: echo "Node setup"
+
+      - name: Run dailyBuild.ts
+        run: |
+          echo "Performing Daily Builds"
+          npx ts-node ../../dailyBuild.ts
