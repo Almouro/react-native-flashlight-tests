@@ -6,7 +6,7 @@ const fetchAvailableVersions = (): Promise<string[]> => {
   return new Promise((resolve, reject) => {
     exec(
       "npm show react-native versions --json",
-      (err: string, stdout: string[], stderr: string) => {
+      (err: string, stdout: string, stderr: string) => {
         if (err) {
           reject(`exec error: ${err}`);
           return;
@@ -19,7 +19,7 @@ const fetchAvailableVersions = (): Promise<string[]> => {
 
         try {
           const versions = stdout;
-          resolve(versions);
+          resolve(JSON.parse(versions));
         } catch (parseError) {
           reject(`JSON parse error: ${parseError}`);
         }
@@ -53,8 +53,7 @@ export const computeMissingVersions = async (): Promise<string[]> => {
   );
 
   console.log("untested versions were identified");
+  console.log("versions found :", versionsAfterLastComputed);
 
   return versionsAfterLastComputed;
 };
-
-computeMissingVersions();
