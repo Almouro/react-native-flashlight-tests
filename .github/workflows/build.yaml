@@ -63,5 +63,5 @@ jobs:
             --duration 10000 \
             --projectId ${{ inputs.projectId }} \
             --test ./e2e/${{ inputs.scenario }}_start.yaml \
-            --testName ${{ inputs.scenario }}
+            --testName ${{ inputs.scenario }} \
             --tagName ${{ inputs.rn_version }}
