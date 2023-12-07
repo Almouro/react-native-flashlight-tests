@@ -1,8 +1,9 @@
 name: Daily Build
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: "0 1 * * *" # Runs at 8:30 AM (UTC) every day
+    - cron: "0 1 * * *" # Runs at 1 AM (UTC) every day
 
 jobs:
   build:
@@ -11,22 +12,19 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-        run: echo "Preparing environment"
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "16"
-        run: echo "Node setup"
+          node-version: "18"
+
+      - name: Install Yarn
+        run: npm install -g yarn
 
       - name: install dependencies
-        run: |
-          echo "Installing dependencies"
-          yarn
+        run: yarn
 
       - name: Run dailyBuild.ts
-        run: |
-          echo "Performing Daily Builds"
-          npx ts-node ../../dailyBuild/dailyBuild.ts
+        run: npx ts-node ./dailyBuild/dailyBuild.ts
         env:
           GH_TOKEN_DISPATCH_ACTION: ${{ secrets.GH_TOKEN_DISPATCH_ACTION }}
