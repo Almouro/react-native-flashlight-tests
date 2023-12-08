@@ -1,4 +1,4 @@
-name: Daily Build
+name: Build for untested RN versions
 
 on:
   workflow_dispatch:
