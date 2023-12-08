@@ -3,6 +3,7 @@ import axios from "axios";
 
 const SCENARIO = "pokedex-4-columns";
 const GH_TOKEN_DISPATCH_ACTION = process.env.GH_TOKEN_DISPATCH_ACTION;
+const START_VERSION = "0.69.9";
 
 const build = async ({
   accessToken,
@@ -45,7 +46,7 @@ const build = async ({
 };
 
 const buildForMissingVersions = async () => {
-  const missingVersions = await computeMissingVersions();
+  const missingVersions = await computeMissingVersions(START_VERSION);
   if (GH_TOKEN_DISPATCH_ACTION === undefined) {
     throw new Error("please set GH_TOKEN_DISPATCH_ACTION env variable");
   }
