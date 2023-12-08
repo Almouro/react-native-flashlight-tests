@@ -1,13 +1,26 @@
 import axios from "axios";
 import { HistoryResult } from "./types";
+import {
+  BASE_API_URL,
+  RN_TEST_PROJECT_ID,
+  TEST_NAME,
+  URL_OPTIONS,
+} from "./constants";
 
 const fetchHistory = async (): Promise<HistoryResult> => {
   console.log("fetching test history...");
   try {
-    const res = await axios.get(
-      "https://us-central1-bam-flashlight.cloudfunctions.net/api/trpc/getUserRunHistory?batch=1&input=%7B%220%22%3A%7B%22projectId%22%3A%2261582a54-5f3b-44bb-8323-dd83e5ddef51%22%2C%22testName%22%3A%22pokedex-4-columns%20-%20Old%20arch%22%7D%7D"
-    );
+    const params = {
+      batch: 1,
+      input: JSON.stringify({
+        "0": {
+          projectId: RN_TEST_PROJECT_ID,
+          testName: TEST_NAME,
+        },
+      }),
+    };
 
+    const res = await axios.get(`${BASE_API_URL}${URL_OPTIONS}`, { params });
     return res.data;
   } catch (error) {
     console.error(error);
