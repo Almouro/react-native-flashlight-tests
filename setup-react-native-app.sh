@@ -15,7 +15,7 @@ APP_FOLDER="$NAME"_"$ENABLE_NEW_ARCH"
 mkdir -p apps
 mkdir -p apks
 cd apps
-npx react-native@latest init $APP_FOLDER --version $VERSION
+npx react-native@$VERSION init $APP_FOLDER --version $VERSION
 
 cp -R ../scenarios/$SCENARIO $APP_FOLDER/scenario
 cd $APP_FOLDER
