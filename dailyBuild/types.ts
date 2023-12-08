@@ -28,7 +28,7 @@ type TestRunResult = {
 export type HistoryResult = [
   {
     result: {
-      data: TestRunResult[];
+      data: { totalCount: number; testRuns: TestRunResult[] };
     };
   }
 ];
