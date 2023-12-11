@@ -33,7 +33,11 @@ export const computeMissingVersions = async (
     return [];
   }
 
-  console.log("untested versions were identified");
+  console.log(
+    `${missingVersions.length} untested version${
+      missingVersions.length > 1 ? "s" : ""
+    } were identified`
+  );
   console.log("versions found :", missingVersions);
 
   return missingVersions;
