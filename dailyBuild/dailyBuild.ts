@@ -1,9 +1,8 @@
 import { computeMissingVersions } from "./computeMissingVersions";
 import axios from "axios";
+import { SCENARIO, START_VERSION } from "./constants";
 
-const SCENARIO = "pokedex-4-columns";
 const GH_TOKEN_DISPATCH_ACTION = process.env.GH_TOKEN_DISPATCH_ACTION;
-const START_VERSION = "0.69.9";
 
 const build = async ({
   accessToken,
