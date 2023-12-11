@@ -7,7 +7,7 @@ import {
   URL_OPTIONS,
 } from "./constants";
 
-const fetchHistory = async (): Promise<HistoryResult> => {
+const fetchHistory = async (numberOfTests: number): Promise<HistoryResult> => {
   console.log("fetching test history...");
   try {
     const params = {
@@ -16,6 +16,7 @@ const fetchHistory = async (): Promise<HistoryResult> => {
         "0": {
           projectId: RN_TEST_PROJECT_ID,
           testName: TEST_NAME,
+          pageSize: numberOfTests,
         },
       }),
     };
@@ -60,6 +61,7 @@ const adaptHistoryToVersions = (history: HistoryResult): string[] => {
 };
 
 export const fetchVersionsHistory = async (): Promise<string[]> => {
-  const historyData = await fetchHistory();
+  const numberOfTests = await fetchNumberOfTests();
+  const historyData = await fetchHistory(numberOfTests);
   return adaptHistoryToVersions(historyData);
 };
