@@ -28,6 +28,29 @@ const fetchHistory = async (): Promise<HistoryResult> => {
   throw new Error("An unexpected error occured while fetching history");
 };
 
+const fetchNumberOfTests = async (): Promise<number> => {
+  console.log("fetching number of tests...");
+  try {
+    const params = {
+      batch: 1,
+      input: JSON.stringify({
+        "0": {
+          projectId: RN_TEST_PROJECT_ID,
+          testName: TEST_NAME,
+          pageSize: 1,
+        },
+      }),
+    };
+
+    const res = await axios.get(`${BASE_API_URL}${URL_OPTIONS}`, { params });
+
+    return res.data[0].result.data.totalCount;
+  } catch (error) {
+    console.error(error);
+  }
+  throw new Error("An unexpected error occured while fetching history");
+};
+
 const adaptHistoryToVersions = (history: HistoryResult): string[] => {
   return history[0].result.data.testRuns
     .sort(
