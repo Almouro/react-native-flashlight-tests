@@ -5,7 +5,7 @@ import {
   RN_TEST_PROJECT_ID,
   TEST_NAME,
   URL_OPTIONS,
-} from "./constants";
+} from "../constants";
 
 const fetchHistory = async (numberOfTests: number): Promise<HistoryResult> => {
   console.log("fetching test history...");
