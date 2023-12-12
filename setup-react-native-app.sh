@@ -26,6 +26,7 @@ yarn
 sed -i -e "s/newArchEnabled=false/newArchEnabled=$ENABLE_NEW_ARCH/g" android/gradle.properties
 
 rm -f "react-native.config.js"
+sed -i -e "s/enableHermes: false/enableHermes: true/" android/app/build.gradle
 
 cd android
 
