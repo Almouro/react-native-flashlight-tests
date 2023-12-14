@@ -1,9 +1,12 @@
 import { computeMissingVersions } from "./computeMissingVersions";
 import axios from "axios";
+import {
+  MAXIMUM_VERSIONS_TO_BUILD,
+  SCENARIO,
+  START_VERSION,
+} from "./constants";
 
-const SCENARIO = "pokedex-4-columns";
 const GH_TOKEN_DISPATCH_ACTION = process.env.GH_TOKEN_DISPATCH_ACTION;
-const START_VERSION = "0.69.9";
 
 const build = async ({
   accessToken,
@@ -45,12 +48,19 @@ const build = async ({
   }
 };
 
-const buildForMissingVersions = async () => {
+const buildForMissingVersions = async (maxVersions: number) => {
   const missingVersions = await computeMissingVersions(START_VERSION);
+  if (missingVersions.length > maxVersions) {
+    console.log(
+      `more than ${maxVersions} untested React Native versions were identified, only the 15 latest will be kept`
+    );
+  }
+  const versionsToBuild = missingVersions.slice(-maxVersions);
   if (GH_TOKEN_DISPATCH_ACTION === undefined) {
     throw new Error("please set GH_TOKEN_DISPATCH_ACTION env variable");
   }
-  missingVersions.forEach((vname) => {
+
+  versionsToBuild.forEach((vname) => {
     build({
       version: vname,
       new_arch: false,
@@ -60,4 +70,4 @@ const buildForMissingVersions = async () => {
   });
 };
 
-buildForMissingVersions();
+buildForMissingVersions(MAXIMUM_VERSIONS_TO_BUILD);

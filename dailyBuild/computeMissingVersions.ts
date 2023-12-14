@@ -1,10 +1,10 @@
 import { fetchAvailableVersions } from "./fetchAvailableVersions";
-import { fetchVersionsHistory } from "./fetchVersionsHistory";
+import { userRunHistoryConnector } from "./userRunHistory/userRunHistory.connector";
 
 export const computeMissingVersions = async (
   startVersion: string
 ): Promise<string[]> => {
-  const computedVersions = await fetchVersionsHistory();
+  const computedVersions = await userRunHistoryConnector();
 
   const allVersions = await fetchAvailableVersions();
 
@@ -33,7 +33,11 @@ export const computeMissingVersions = async (
     return [];
   }
 
-  console.log("untested versions were identified");
+  console.log(
+    `${missingVersions.length} untested version${
+      missingVersions.length > 1 ? "s" : ""
+    } were identified`
+  );
   console.log("versions found :", missingVersions);
 
   return missingVersions;
