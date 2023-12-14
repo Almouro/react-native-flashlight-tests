@@ -8,6 +8,10 @@ SCENARIO=$3
 release_name=${VERSION//./_}
 release_name=${release_name//-/_}
 release_name=$(echo "$release_name" | tr '[:lower:]' '[:upper:]')
+RN_CLI_VERSION=$(echo -e "0.73\n$VERSION" | sort -V | head -n1)
+if [ "$RN_CLI_VERSION" != "0.73" ]; then
+    RN_CLI_VERSION="0.72"
+fi
 
 NAME="RN$release_name"
 APP_FOLDER="$NAME"_"$ENABLE_NEW_ARCH"
@@ -15,7 +19,7 @@ APP_FOLDER="$NAME"_"$ENABLE_NEW_ARCH"
 mkdir -p apps
 mkdir -p apks
 cd apps
-npx react-native@$VERSION init $APP_FOLDER --version $VERSION
+npx react-native@$RN_CLI_VERSION init $APP_FOLDER --version $VERSION
 
 cp -R ../scenarios/$SCENARIO $APP_FOLDER/scenario
 cd $APP_FOLDER
