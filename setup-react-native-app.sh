@@ -25,6 +25,9 @@ yarn
 
 sed -i -e "s/newArchEnabled=false/newArchEnabled=$ENABLE_NEW_ARCH/g" android/gradle.properties
 
+sed -i -e "s/enableHermes: false/enableHermes: true/" android/app/build.gradle
+
+
 cd android
 ./gradlew assembleRelease
 mv app/build/outputs/apk/release/app-release.apk ../../../apks/$NAME-newarch_$ENABLE_NEW_ARCH-$SCENARIO.apk
