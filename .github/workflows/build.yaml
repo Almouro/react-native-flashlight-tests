@@ -63,5 +63,5 @@ jobs:
             --duration 10000 \
             --projectId ${{ inputs.projectId }} \
             --test ./e2e/${{ inputs.scenario }}_start.yaml \
-            --testName "${{ inputs.scenario }} - ${{ inputs.new_arch == true && 'New arch' || 'Old arch' }}" \
+            --testName "${{ inputs.scenario }}_${{ inputs.new_arch == true && 'New-arch' || 'Old-arch' }}" \
             --tagName ${{ inputs.rn_version }}
