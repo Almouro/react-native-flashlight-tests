@@ -25,8 +25,12 @@ yarn
 
 sed -i -e "s/newArchEnabled=false/newArchEnabled=$ENABLE_NEW_ARCH/g" android/gradle.properties
 
+rm -f "react-native.config.js"
+
 cd android
-./gradlew assembleRelease
+
+./gradlew clean assembleRelease
+
 mv app/build/outputs/apk/release/app-release.apk ../../../apks/$NAME-newarch_$ENABLE_NEW_ARCH-$SCENARIO.apk
 
 echo "APK_PATH=apks/$NAME-newarch_$ENABLE_NEW_ARCH-$SCENARIO.apk" >> $GITHUB_ENV
