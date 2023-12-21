@@ -14,9 +14,9 @@ export const computeMissingVersions = async (
     );
   }
 
-  const availableVersions = allVersions.slice(
-    allVersions.indexOf(startVersion)
-  );
+  const availableVersions = allVersions
+    .slice(allVersions.indexOf(startVersion))
+    .filter((version) => !version.includes("0.73.0-nightly")); // remove 0.73.0-nightly versions since they fail systematically
 
   const missingVersions: string[] = [];
 
