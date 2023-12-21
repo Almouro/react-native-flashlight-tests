@@ -24,8 +24,11 @@ echo "export {default} from './scenario/App';" > App.js
 yarn
 
 sed -i -e "s/newArchEnabled=false/newArchEnabled=$ENABLE_NEW_ARCH/g" android/gradle.properties
+rm react-native.config.js
 
 cd android
+
+./gradlew clean
 ./gradlew assembleRelease
 mv app/build/outputs/apk/release/app-release.apk ../../../apks/$NAME-newarch_$ENABLE_NEW_ARCH-$SCENARIO.apk
 
