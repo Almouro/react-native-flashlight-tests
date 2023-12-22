@@ -1,3 +1,4 @@
+import { version } from "typescript";
 import { fetchAvailableVersions } from "./fetchAvailableVersions";
 import { userRunHistoryConnector } from "./userRunHistory/userRunHistory.connector";
 
@@ -16,7 +17,8 @@ export const computeMissingVersions = async (
 
   const availableVersions = allVersions
     .slice(allVersions.indexOf(startVersion))
-    .filter((version) => !version.includes("0.73.0-nightly")); // remove 0.73.0-nightly versions since they fail systematically
+    .filter((version) => !version.includes("0.73.0-nightly"))
+    .filter((version) => version !== "0.71.0-rc.0"); // remove 0.73.0-nightly versions and 0.71.0-rc.0 since they fail systematically
 
   const missingVersions: string[] = [];
 
