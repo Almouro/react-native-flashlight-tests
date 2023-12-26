@@ -1,6 +1,6 @@
 import { computeMissingVersions } from "./computeMissingVersions";
 import * as fetchAvailableVersions from "./fetchAvailableVersions";
-import * as fetchVersionsHistory from "./fetchVersionsHistory";
+import * as userRunHistoryConnector from "./userRunHistory/userRunHistory.connector";
 
 jest.spyOn(console, "log").mockImplementation(() => {});
 
@@ -18,7 +18,7 @@ jest
 describe("computeMissingVersions", () => {
   it("should return untested versions from the first one specified", async () => {
     jest
-      .spyOn(fetchVersionsHistory, "fetchVersionsHistory")
+      .spyOn(userRunHistoryConnector, "userRunHistoryConnector")
       .mockResolvedValue(["0.69.10", "0.69.11"]);
     expect(await computeMissingVersions("0.69.9")).toEqual([
       "0.69.9",
@@ -28,7 +28,7 @@ describe("computeMissingVersions", () => {
   });
   it("should return an empty array if no untested version is found", async () => {
     jest
-      .spyOn(fetchVersionsHistory, "fetchVersionsHistory")
+      .spyOn(userRunHistoryConnector, "userRunHistoryConnector")
       .mockResolvedValue([
         "0.69.8",
         "0.69.9",
@@ -41,7 +41,7 @@ describe("computeMissingVersions", () => {
   });
   it("should throw an error if the start version is not available", async () => {
     jest
-      .spyOn(fetchVersionsHistory, "fetchVersionsHistory")
+      .spyOn(userRunHistoryConnector, "userRunHistoryConnector")
       .mockResolvedValue(["0.69.10", "0.69.11", "0.70", "another version"]);
     await expect(computeMissingVersions("0.69.7")).rejects.toThrow(
       "startVersion 0.69.7 is not available in npm registry"
