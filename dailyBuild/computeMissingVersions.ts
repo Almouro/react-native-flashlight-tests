@@ -1,11 +1,11 @@
-import { version } from "typescript";
 import { fetchAvailableVersions } from "./fetchAvailableVersions";
 import { userRunHistoryConnector } from "./userRunHistory/userRunHistory.connector";
 
 export const computeMissingVersions = async (
+  testName: string,
   startVersion: string
 ): Promise<string[]> => {
-  const computedVersions = await userRunHistoryConnector();
+  const computedVersions = await userRunHistoryConnector(testName);
 
   const allVersions = await fetchAvailableVersions();
 
