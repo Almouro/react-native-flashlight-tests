@@ -9,7 +9,6 @@ import {
 const GH_TOKEN_DISPATCH_ACTION = process.env.GH_TOKEN_DISPATCH_ACTION;
 
 const build = async ({
-  accessToken,
   new_arch,
   scenario,
   version,
@@ -17,39 +16,39 @@ const build = async ({
   version: string;
   new_arch: boolean;
   scenario: string;
-  accessToken: string;
 }): Promise<void> => {
   console.log(`Triggering build for ${version}...`);
 
-  try {
-    await axios.post(
-      "https://api.github.com/repos/almouro/wip-wip/actions/workflows/build.yaml/dispatches",
-      {
-        ref: "main",
-        inputs: {
-          new_arch,
-          rn_version: version,
-          scenario,
-        },
+  await axios.post(
+    "https://api.github.com/repos/almouro/wip-wip/actions/workflows/build.yaml/dispatches",
+    {
+      ref: "main",
+      inputs: {
+        new_arch,
+        rn_version: version,
+        scenario,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          Accept: "application/vnd.github+json",
-          "Content-Type": "application/json",
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      }
-    );
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${GH_TOKEN_DISPATCH_ACTION}`,
+        Accept: "application/vnd.github+json",
+        "Content-Type": "application/json",
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    }
+  );
 
-    console.log(`Build triggered successfully for ${version}`);
-  } catch (error) {
-    console.error(error);
-  }
+  console.log(`Build triggered successfully for ${version}`);
 };
 
-const buildForMissingVersions = async (maxVersions: number) => {
-  const missingVersions = await computeMissingVersions(START_VERSION);
+const buildForMissingVersions = async (
+  newArch: boolean,
+  maxVersions: number
+) => {
+  // This is copy pasted from build.yaml
+  const testName = `${SCENARIO}_cache10s_${newArch ? "New-arch" : "Old-arch"}`;
+  const missingVersions = await computeMissingVersions(testName, START_VERSION);
   if (missingVersions.length > maxVersions) {
     console.log(
       `more than ${maxVersions} untested React Native versions were identified, only the 15 latest will be kept`
@@ -60,14 +59,18 @@ const buildForMissingVersions = async (maxVersions: number) => {
     throw new Error("please set GH_TOKEN_DISPATCH_ACTION env variable");
   }
 
-  versionsToBuild.forEach((vname) => {
-    build({
-      version: vname,
-      new_arch: false,
+  for (const versionName of versionsToBuild) {
+    await build({
+      version: versionName,
+      new_arch: newArch,
       scenario: SCENARIO,
-      accessToken: GH_TOKEN_DISPATCH_ACTION,
     });
-  });
+  }
 };
 
-buildForMissingVersions(MAXIMUM_VERSIONS_TO_BUILD);
+const run = async () => {
+  await buildForMissingVersions(false, MAXIMUM_VERSIONS_TO_BUILD);
+  await buildForMissingVersions(true, MAXIMUM_VERSIONS_TO_BUILD);
+};
+
+run();
