@@ -48,7 +48,10 @@ const buildForMissingVersions = async (
 ) => {
   // This is copy pasted from build.yaml
   const testName = `${SCENARIO}_cache10s_${newArch ? "New-arch" : "Old-arch"}`;
-  const missingVersions = await computeMissingVersions(testName, START_VERSION);
+  const missingVersions = await computeMissingVersions(
+    testName,
+    START_VERSION[newArch ? "NEW_ARCH" : "OLD_ARCH"]
+  );
   if (missingVersions.length > maxVersions) {
     console.log(
       `more than ${maxVersions} untested React Native versions were identified, only the 15 latest will be kept`

@@ -1,3 +1,4 @@
+import { IGNORED_VERSIONS } from "./constants";
 import { fetchAvailableVersions } from "./fetchAvailableVersions";
 import { userRunHistoryConnector } from "./userRunHistory/userRunHistory.connector";
 
@@ -17,6 +18,7 @@ export const computeMissingVersions = async (
 
   const availableVersions = allVersions
     .slice(allVersions.indexOf(startVersion))
+    .filter((version) => !IGNORED_VERSIONS.includes(version))
     .filter((version) => !version.includes("0.73.0-nightly"))
     .filter((version) => version !== "0.71.0-rc.0"); // remove 0.73.0-nightly versions and 0.71.0-rc.0 since they fail systematically
 
