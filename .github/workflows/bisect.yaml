@@ -23,8 +23,8 @@ jobs:
           cd ../hermes
           HERMES_COMMIT=$(git rev-list -n 1 --before=$COMMIT_DATE main)
           cd ../react-native
-          echo $HERMES_COMMIT > sdks/.hermesversion
-          git apply ../bisect/patch_070_2.patch
+          echo $HERMES_COMMIT > packages/react-native/sdks/.hermesversion
+          # git apply ../bisect/patch_070_2.patch
           echo "import App from './pokedex/App';export default App;" > packages/rn-tester/js/RNTesterAppShared.js
           mv ../scenarios/pokedex-4-columns packages/rn-tester/js/pokedex
       - uses: actions/setup-node@v3
@@ -39,6 +39,7 @@ jobs:
         uses: android-actions/setup-android@v2
       - name: Build APK
         run: |
+          export ANDROID_NDK=""
           cd react-native
           yarn
           ./gradlew :packages:rn-tester:android:app:assembleHermesRelease -PreactNativeArchitectures=armeabi-v7a
