@@ -47,7 +47,7 @@ const buildForMissingVersions = async (
   maxVersions: number
 ) => {
   // This is copy pasted from build.yaml
-  const testName = `${SCENARIO}_cache10s_${newArch ? "New-arch" : "Old-arch"}`;
+  const testName = `${SCENARIO}_${newArch ? "NewArch" : "OldArch"}`;
   const missingVersions = await computeMissingVersions(
     testName,
     START_VERSION[newArch ? "NEW_ARCH" : "OLD_ARCH"]
