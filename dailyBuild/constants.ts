@@ -13,5 +13,6 @@ export const IGNORED_VERSIONS = [
   "0.72.0-rc.2", // build crashing for both arch
   "0.72.0-rc.3", // build crashing for both arch
   "0.74.0-nightly-20231110-9b33e752c", // build crashing for new arch
+  "1000.0.0",
 ];
 export const MAXIMUM_VERSIONS_TO_BUILD = 15;
