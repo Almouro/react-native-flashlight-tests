@@ -26,7 +26,7 @@ jobs:
           echo $HERMES_COMMIT > packages/react-native/sdks/.hermesversion
           # git apply ../bisect/patch_070_2.patch
           echo "import App from './pokedex/App';export default App;" > packages/rn-tester/js/RNTesterAppShared.js
-          mv ../scenarios/pokedex-4-columns packages/rn-tester/js/pokedex
+          mv ../scenarios/FlatListExample packages/rn-tester/js/pokedex
       - uses: actions/setup-node@v3
         with:
           node-version: 18
