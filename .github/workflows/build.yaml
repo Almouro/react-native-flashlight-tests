@@ -18,7 +18,7 @@ on:
       projectId:
         description: "Flashlight project id"
         type: string
-        default: "61582a54-5f3b-44bb-8323-dd83e5ddef51"
+        default: "8691325c-b0b2-42db-95ee-7d30df5f15c2"
 
 jobs:
   build_app:
@@ -60,7 +60,7 @@ jobs:
           curl https://get.flashlight.dev | bash
           # For some reason path overriding doesn't work
           /home/runner/.flashlight/bin/flashlight cloud --app ${{ env.APK_PATH }} \
-            --duration 10000 \
+            --duration 15000 \
             --projectId ${{ inputs.projectId }} \
             --beforeAll ./e2e/${{ inputs.scenario }}_start.yaml \
             --test ./e2e/${{ inputs.scenario }}_start.yaml \

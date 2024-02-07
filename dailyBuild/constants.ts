@@ -1,7 +1,7 @@
 export const BASE_API_URL =
   "https://us-central1-bam-flashlight.cloudfunctions.net/api/";
 export const URL_OPTIONS = "trpc/getUserRunHistory";
-export const RN_TEST_PROJECT_ID = "61582a54-5f3b-44bb-8323-dd83e5ddef51";
+export const RN_TEST_PROJECT_ID = "8691325c-b0b2-42db-95ee-7d30df5f15c2";
 export const SCENARIO = "FlatListExample";
 export const START_VERSION = {
   OLD_ARCH: "0.68.0",

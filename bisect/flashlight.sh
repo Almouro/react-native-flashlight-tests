@@ -20,7 +20,7 @@ curl https://get.flashlight.dev | bash
 /home/runner/.flashlight/bin/flashlight cloud \
   --test bisect/start.yaml \
   --beforeAll bisect/start.yaml \
-  --duration 10000 \
+  --duration 15000 \
   --app "${commit_hash}-pok4col.apk" \
   --projectId $PROJECT_ID \
   --tagName $commit_hash \
