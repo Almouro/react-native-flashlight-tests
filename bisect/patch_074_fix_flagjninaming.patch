@@ -1,0 +1,13 @@
+diff --git a/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/internal/featureflags/ReactNativeFeatureFlagsCxxInterop.kt b/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/internal/featureflags/ReactNativeFeatureFlagsCxxInterop.kt
+index bfb2f4fb25b..861208cb871 100644
+--- a/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/internal/featureflags/ReactNativeFeatureFlagsCxxInterop.kt
++++ b/packages/react-native/ReactAndroid/src/main/java/com/facebook/react/internal/featureflags/ReactNativeFeatureFlagsCxxInterop.kt
+@@ -25,7 +25,7 @@ import com.facebook.soloader.SoLoader
+ @DoNotStrip
+ object ReactNativeFeatureFlagsCxxInterop {
+   init {
+-    SoLoader.loadLibrary("reactfeatureflagsjni")
++    SoLoader.loadLibrary("featureflagsjni")
+   }
+ 
+   @DoNotStrip @JvmStatic external fun commonTestFlag(): Boolean

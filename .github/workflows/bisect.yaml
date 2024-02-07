@@ -24,7 +24,7 @@ jobs:
           HERMES_COMMIT=$(git rev-list -n 1 --before=$COMMIT_DATE main)
           cd ../react-native
           echo $HERMES_COMMIT > packages/react-native/sdks/.hermesversion
-          # git apply ../bisect/patch_070_2.patch
+          git apply ../bisect/patch_074_fix_flagjninaming.patch
           echo "import App from './pokedex/App';export default App;" > packages/rn-tester/js/RNTesterAppShared.js
           mv ../scenarios/FlatListExample packages/rn-tester/js/pokedex
       - uses: actions/setup-node@v3
