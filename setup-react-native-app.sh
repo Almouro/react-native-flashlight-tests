@@ -23,6 +23,7 @@ echo "export {default} from './scenario/App';" > App.tsx
 echo "export {default} from './scenario/App';" > App.js
 yarn
 
+sed -i -e "s/newArchEnabled=true/newArchEnabled=$ENABLE_NEW_ARCH/g" android/gradle.properties
 sed -i -e "s/newArchEnabled=false/newArchEnabled=$ENABLE_NEW_ARCH/g" android/gradle.properties
 
 rm -f "react-native.config.js"
