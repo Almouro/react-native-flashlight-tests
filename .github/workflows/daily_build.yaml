@@ -3,7 +3,7 @@ name: Build for untested RN versions
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 1 * * 1-5" # Runs at 1 AM (UTC) every day from Monday to Friday
+    - cron: "0 1 * * *" # Runs at 1 AM (UTC) every day
 
 jobs:
   build:
