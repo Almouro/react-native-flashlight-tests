@@ -15,8 +15,8 @@ APP_FOLDER="$NAME"_"$ENABLE_NEW_ARCH"
 mkdir -p apps
 mkdir -p apks
 
-rm package.json
-rm yarn.lock
+rm -f package.json
+rm -f yarn.lock
 
 cd apps
 npx react-native@latest init $APP_FOLDER --version $VERSION
@@ -27,15 +27,13 @@ echo "export {default} from './scenario/App';" > App.tsx
 echo "export {default} from './scenario/App';" > App.js
 
 YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn
-chmod +x node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
+# chmod +x node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
 
 sed -i -e "s/newArchEnabled=true/newArchEnabled=$ENABLE_NEW_ARCH/g" android/gradle.properties
 sed -i -e "s/newArchEnabled=false/newArchEnabled=$ENABLE_NEW_ARCH/g" android/gradle.properties
 
 rm -f "react-native.config.js"
 sed -i -e "s/enableHermes: false/enableHermes: true/" android/app/build.gradle
-
-# chmod +x node_modules/react-native/sdks/hermesc/osx-bin/hermesc
 
 cd android
 
