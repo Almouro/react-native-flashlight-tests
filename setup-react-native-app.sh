@@ -17,9 +17,12 @@ mkdir -p apks
 
 rm -f package.json
 rm -f yarn.lock
+rm -rf .git
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
 
 cd apps
-npx react-native@latest init $APP_FOLDER --version $VERSION
+npx @react-native-community/cli@latest init $APP_FOLDER --version $VERSION --verbose --install-pods false
 
 cp -R ../scenarios/$SCENARIO $APP_FOLDER/scenario
 cd $APP_FOLDER
