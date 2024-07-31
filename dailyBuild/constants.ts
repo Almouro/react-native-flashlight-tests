@@ -14,6 +14,10 @@ export const IGNORED_VERSIONS = [
   "0.72.0-rc.3", // build crashing for both arch
   "0.74.0-nightly-20231110-9b33e752c", // build crashing for new arch
   "0.74.0-nightly-20240212-2090fe5cf", // build failing for new arch
+  "0.75.0-rc.0", // build failing for both arch
+  "0.75.0-rc.1", // build failing for both arch
+  "0.75.0", // build failing for both arch because of missing @react-native-community/template
+  "0.76.0-nightly-20240822-81a41ec97", // doesn't build, fixed by https://github.com/facebook/react-native/commit/524a3f0476f9e0185bbbdc470cfd2aa34420bae6
   "1000.0.0",
 ];
 export const MAXIMUM_VERSIONS_TO_BUILD = 15;
