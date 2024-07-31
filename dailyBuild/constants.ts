@@ -18,4 +18,4 @@ export const IGNORED_VERSIONS = [
   "0.75.0-rc.1", // build failing for both arch
   "1000.0.0",
 ];
-export const MAXIMUM_VERSIONS_TO_BUILD = 15;
+export const MAXIMUM_VERSIONS_TO_BUILD = 150;
