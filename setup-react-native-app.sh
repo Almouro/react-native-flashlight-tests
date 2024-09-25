@@ -15,21 +15,18 @@ APP_FOLDER="$NAME"_"$ENABLE_NEW_ARCH"
 mkdir -p apps
 mkdir -p apks
 
-rm -f package.json
-rm -f yarn.lock
-rm -rf .git
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 
 cd apps
-npx @react-native-community/cli@latest init $APP_FOLDER --version $VERSION --verbose --install-pods false
+npx @react-native-community/cli@latest init $APP_FOLDER --version $VERSION --verbose --install-pods false --pm npm
 
 cp -R ../scenarios/$SCENARIO $APP_FOLDER/scenario
 cd $APP_FOLDER
 echo "export {default} from './scenario/App';" > App.tsx
 echo "export {default} from './scenario/App';" > App.js
 
-YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn
+npm install
 # chmod +x node_modules/react-native/sdks/hermesc/linux64-bin/hermesc
 
 sed -i -e "s/newArchEnabled=true/newArchEnabled=$ENABLE_NEW_ARCH/g" android/gradle.properties
